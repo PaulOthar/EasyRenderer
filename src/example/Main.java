@@ -9,10 +9,12 @@ import graphics.EasyScreen;
 
 public class Main {
 	public static void main(String[] args) {
-		EasyScreen screen = new EasyScreen(500,500) {
+		int width = 500;
+		int height = 500;
+		
+		EasyScreen screen = new EasyScreen(width,height) {
 			public float step = 1f/1000;
 			public float currentStep = 0;
-			int[] fillPattern =  EasyDrafter.buildFillPattern(width, height);
 			int[] trianglePattern = EasyDrafter.buildUnsortedTrianglePattern(width, height, width/2, height/6, width/4, height-height/3, width-width/4, height-height/3);
 			@Override
 			public void render() {
@@ -20,8 +22,8 @@ public class Main {
 				if(currentStep > 1) {
 					currentStep = 0;
 				}
-				EasyDrafter.draw(this,fillPattern,EasyColor.cyclicRGBScale(currentStep));
-				EasyDrafter.draw(this,trianglePattern,EasyColor.cyclicRGBScale(1-currentStep));
+				this.draw(currentStep);
+				this.draw(trianglePattern,-currentStep);
 			}
 		};
 		EasyDisplay display = new EasyDisplay(screen) {
@@ -34,7 +36,7 @@ public class Main {
 		JFrame window = new JFrame("Example");
 		window.add(display);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(500,500);
+		window.setSize(width,height);
 		window.setResizable(false);
 		window.setVisible(true);
 		

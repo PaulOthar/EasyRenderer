@@ -1,7 +1,5 @@
 package graphicTools;
 
-import graphics.EasyRender;
-
 public class EasyDrafter {
 	public static int[] buildFillPattern(int maxWidth,int maxHeight){
 		int length = maxWidth*maxHeight;
@@ -236,21 +234,4 @@ public class EasyDrafter {
 				
 		return output;
 	}
-	
-	public static void draw(EasyRender render,int[] pattern) {
-		int i = 0;
-		float scaleStep = 1f/pattern.length;
-		for(i = 0;i<pattern.length;i++) {
-			render.pixels[pattern[i]] = EasyColor.rgbScale(i*scaleStep);
-		}
-	}
-	
-	public static void draw(EasyRender render,int[] pattern,int color) {
-		int i = 0;
-		for(i = 0;i<pattern.length;i++) {
-			render.pixels[pattern[i]] = color;
-		}
-	}
-	
-	
 }
