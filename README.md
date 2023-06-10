@@ -92,6 +92,7 @@ I = 2 bit Intensity<br>
 R = 2 bit Red<br>
 G = 2 bit Green<br>
 B = 2 bit Blue<br>
+![](https://raw.githubusercontent.com/paulothar/EasyRenderer/master/resources/rgbyte.png)
 
 ### rgbytePallete(int pallete,int indexes)
 It took too long to write this documentation, so i have no idea what i have done here.
