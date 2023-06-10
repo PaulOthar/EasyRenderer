@@ -1,6 +1,12 @@
 package graphicTools;
 
 public class EasyDrafter {
+	/**
+	 * Builds a simple filling pattern, that occupies every single pixel in the bitmap.
+	 * @param maxWidth
+	 * @param maxHeight
+	 * @return pattern
+	 */
 	public static int[] buildFillPattern(int maxWidth,int maxHeight){
 		int length = maxWidth*maxHeight;
 		int[] output = new int[length];
@@ -13,6 +19,17 @@ public class EasyDrafter {
 		return output;
 	}
 	
+	/**
+	 * Builds a simple line pattern, from origin to destination.<br>
+	 * It does have out of bounds protection.
+	 * @param maxWidth
+	 * @param maxHeight
+	 * @param x1 (Origin)
+	 * @param y1 (Origin)
+	 * @param x2 (Destination)
+	 * @param y2 (Destination)
+	 * @return pattern
+	 */
 	public static int[] buildLinePattern(int maxWidth,int maxHeight,int x1,int y1,int x2,int y2){
 		float X = x2-x1;
 		float Y = y2-y1;
@@ -46,6 +63,19 @@ public class EasyDrafter {
 		return output;
 	}
 	
+	/**
+	 * Sorts the triangle, and then calls the buildTrianglePattern.<br>
+	 * Builds a filled triangle pattern out of a <strong>SORTED</strong> triangle.
+	 * @param maxWidth
+	 * @param maxHeight
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @param x3
+	 * @param y3
+	 * @return pattern
+	 */
 	public static int[] buildUnsortedTrianglePattern(int maxWidth,int maxHeight,int x1, int y1, int x2, int y2, int x3, int y3) {
 		int 
 		sx1 = x1,
@@ -87,6 +117,18 @@ public class EasyDrafter {
 		return EasyDrafter.buildTrianglePattern(maxWidth,maxHeight,sx1,sy1,sx2,sy2,sx3,sy3);
 	}
 	
+	/**.
+	 * Builds a filled triangle pattern out of a <strong>SORTED</strong> triangle.
+	 * @param maxWidth
+	 * @param maxHeight
+	 * @param x1 (Top)
+	 * @param y1 (Top)
+	 * @param x2 (Middle)
+	 * @param y2 (Middle)
+	 * @param x3 (Bottom)
+	 * @param y3 (Bottom)
+	 * @return pattern
+	 */
 	public static int[] buildTrianglePattern(int maxWidth,int maxHeight,int x1, int y1, int x2, int y2, int x3, int y3) {
 		int dx12 = x2-x1;
 		int dy12 = y2-y1;
@@ -183,6 +225,17 @@ public class EasyDrafter {
 		return output;
 	}
 	
+	/**
+	 * Builds a infinite scalable triangle, but i dont remember what each parameter means...
+	 * @param maxWidth
+	 * @param maxHeight
+	 * @param XperY1 (IDK)
+	 * @param XperY2 (IDK)
+	 * @param size
+	 * @param x
+	 * @param y
+	 * @return pattern
+	 */
 	public static int[] buildInfiniteTrianglePattern(int maxWidth,int maxHeight,float XperY1,float XperY2,int size,int x, int y) {
 		int currentX = 0;
 		int currentY = 0;

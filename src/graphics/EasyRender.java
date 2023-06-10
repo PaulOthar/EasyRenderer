@@ -2,17 +2,30 @@ package graphics;
 
 import graphicTools.EasyColor;
 
+/**
+ * EasyRender is a simple bitmap with some draw routines.
+ * @author PaulOthar
+ */
 public class EasyRender {
 	public final int width;
 	public final int height;
 	public final int[] pixels;
 	
+	/**
+	 * Takes in a width and a height in pixels, to create a bitmap(Array of Integers).
+	 * @param width in pixels
+	 * @param height in pixels
+	 */
 	public EasyRender(int width,int height) {
 		this.width = width;
 		this.height = height;
 		this.pixels = new int[width*height];
 	}
 	
+	/**
+	 * Fills the bitmap with a static rgb gradiant image.<br>
+	 * The gradiant flows from top to bottom.
+	 */
 	public void draw() {
 		int i = 0;
 		float scaleStep = 1f/this.pixels.length;
@@ -21,6 +34,13 @@ public class EasyRender {
 		}
 	}
 	
+	/**
+	 * Fills the bitmap with a moving rgb gradiant image, based on a <strong>normalized</strong> movement value.<br>
+	 * The gradiant flows from top to bottom.<br><br>
+	 * Positive movement means the image will flow upwards.<br>
+	 * Negative movement means the image will flow downwards.
+	 * @param movement step (0-1)
+	 */
 	public void draw(float movement) {
 		int i = 0;
 		float scaleStep = 1f/this.pixels.length;
@@ -37,6 +57,10 @@ public class EasyRender {
 		}
 	}
 	
+	/**
+	 * Fills the bitmap with a single color.
+	 * @param color
+	 */
 	public void draw(int color) {
 		int i = 0;
 		for(i = 0;i<this.pixels.length;i++) {
@@ -44,6 +68,12 @@ public class EasyRender {
 		}
 	}
 	
+	/**
+	 * Fills the specified pixels on the bitmap with a static rgb gradiant image.<br>
+	 * The gradiant flows from top to bottom.
+	 * 
+	 * @param pattern
+	 */
 	public void draw(int[] pattern) {
 		int i = 0;
 		float scaleStep = 1f/pattern.length;
@@ -52,6 +82,15 @@ public class EasyRender {
 		}
 	}
 	
+	/**
+	 * Fills the specified pixels on the bitmap with a moving rgb gradiant image, based on a <strong>normalized</strong> movement value.<br>
+	 * The gradiant flows from top to bottom.<br><br>
+	 * Positive movement means the image will flow upwards.<br>
+	 * Negative movement means the image will flow downwards.
+	 * 
+	 * @param pattern
+	 * @param movement step (0-1)
+	 */
 	public void draw(int[] pattern,float movement) {
 		int i = 0;
 		float scaleStep = 1f/pattern.length;
@@ -68,6 +107,11 @@ public class EasyRender {
 		}
 	}
 	
+	/**
+	 * Fills the specified pixels on the bitmap with a single color.
+	 * @param pattern
+	 * @param color
+	 */
 	public void draw(int[] pattern,int color) {
 		int i = 0;
 		for(i = 0;i<pattern.length;i++) {
@@ -75,18 +119,24 @@ public class EasyRender {
 		}
 	}
 	
-	public void draw(EasyRender render,int xOrigin,int yOrigin) {
-		int yPix = 0;
-		int xPix = 0;
+	/**
+	 * Fills the specified area with the contents of another Render
+	 * @param render
+	 * @param x (Origin)
+	 * @param y (Origin)
+	 */
+	public void draw(EasyRender render,int x,int y) {
+		int bitmapY = 0;
+		int bitmapX = 0;
 		
-		int y = 0;
-		int x = 0;
-		for(y = 0;y<render.height;y++) {
-			yPix = y+yOrigin;
-			for(x = 0;x<render.width;x++) {
-				xPix = x+xOrigin;
+		int Y = 0;
+		int X = 0;
+		for(Y = 0;Y<render.height;Y++) {
+			bitmapY = Y+y;
+			for(X = 0;X<render.width;X++) {
+				bitmapX = X+x;
 				
-				pixels[xPix+yPix*this.width] = render.pixels[x+y*render.width];
+				pixels[bitmapX+bitmapY*this.width] = render.pixels[X+Y*render.width];
 			}
 		}
 	}

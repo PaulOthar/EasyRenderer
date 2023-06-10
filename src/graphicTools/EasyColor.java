@@ -1,6 +1,15 @@
 package graphicTools;
 
 public class EasyColor {
+	/**
+	 * Translate 3 Integers RGB into a singe integer RGB.<br>
+	 * The 3 intake integers will be read with bitwise operations, to not overflow the 255 limit<br>
+	 * Output:0x00RRGGBB
+	 * @param r (0-255)
+	 * @param g (0-255)
+	 * @param b (0-255)
+	 * @return integer rgb
+	 */
 	public static int rgb(int r,int g,int b) {
 		// 0x00_rr_gg_bb
 		int output = 0;
@@ -17,6 +26,16 @@ public class EasyColor {
 		return output;
 	}
 	
+	/**
+	 * Takes in a single byte of a integer, and turns into a full integer RGB<br>
+	 * Byte Structure : 0bIIRRGGBB<br>
+	 * I = 2 bit Intensity<br>
+	 * R = 2 bit Red<br>
+	 * G = 2 bit Green<br>
+	 * B = 2 bit Blue<br>
+	 * @param color rgbyte
+	 * @return integer rgb
+	 */
 	public static int rgbyte(int color) {
 		int intensity = color & 0b1100_0000;
 		int red = color & 0b0011_0000;
@@ -35,6 +54,12 @@ public class EasyColor {
 		return red+green+blue;
 	}
 	
+	/**
+	 * It took too long to write this documentation, so i have no idea what i have done here.
+	 * @param pallete
+	 * @param indexes
+	 * @return
+	 */
 	public static int rgbytePallete(int pallete,int indexes) {
 		int firstGrabber = (int) Math.pow(2, (indexes & 0b11)*8);
 		int secondGrabber = (int) Math.pow(2, ((indexes & 0b1100)/4)*8);
@@ -45,6 +70,12 @@ public class EasyColor {
 		return rgbyte(firstHalf+secondHalf);
 	}
 	
+	/**
+	 * Generates a color based on a normalized value.<br>
+	 * Flow: R->G->B
+	 * @param normalizedScale (0-1)
+	 * @return integer rgb
+	 */
 	public static int rgbScale(float normalizedScale) {
 		int v1 = 0;
 		int v2 = 0;
@@ -68,6 +99,12 @@ public class EasyColor {
 		}
 	}
 	
+	/**
+	 * Generates a color based on a normalized value.<br>
+	 * Flow: R->G->B->R
+	 * @param normalizedScale (0-1)
+	 * @return integer rgb
+	 */
 	public static int cyclicRGBScale(float normalizedScale) {
 		int v1 = 0;
 		int v2 = 0;
@@ -103,6 +140,13 @@ public class EasyColor {
 		}
 	}
 	
+	/**
+	 * Grabs the linear interpolation between two colors, based on a normalized value.
+	 * @param scale (0-1)
+	 * @param color1 
+	 * @param color2
+	 * @return integer rgb
+	 */
 	public static int gradient(float scale,int color1,int color2) {
 		int r1 = (color1&0xff0000)/0x10000;
 		int g1 = (color1&0xff00)/0x100;
@@ -119,6 +163,12 @@ public class EasyColor {
 		return (R*0x10000)+(G*0x100)+B;
 	}
 	
+	/**
+	 * Grabs the linear interpolation between multiple colors, based on a normalized value.
+	 * @param scale (0-1)
+	 * @param colors 
+	 * @return integer rgb
+	 */
 	public static int multiGradient(float scale,int[] colors) {
 		float colorpiece = 1f/(colors.length-1);
 		

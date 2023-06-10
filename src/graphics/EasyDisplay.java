@@ -6,9 +6,15 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+/**
+ * EasyDisplay is an extention of the AWT Canvas.<br>
+ * It is a thread by itself<br>
+ * @author PaulOthar
+ */
+@SuppressWarnings("serial")
 public abstract class EasyDisplay extends Canvas implements Runnable{
-	public static int WIDTH;
-	public static int HEIGHT;
+	public int width;
+	public int height;
 	
 	private Thread thread;
 	private boolean running = false;
@@ -20,12 +26,16 @@ public abstract class EasyDisplay extends Canvas implements Runnable{
 	private int[] pixels;
 	
 	private EasyDisplay(int width,int heigth) {
-		EasyDisplay.WIDTH = width;
-		EasyDisplay.HEIGHT = heigth;
+		this.width = width;
+		this.height = heigth;
 		this.img = new BufferedImage(width,heigth,BufferedImage.TYPE_INT_RGB);
 		this.pixels = ((DataBufferInt)img.getRaster().getDataBuffer()).getData();
 	}
 	
+	/**
+	 * Initializes this EasyDisplay based on a existing EasyScreen.
+	 * @param screen
+	 */
 	public EasyDisplay(EasyScreen screen) {
 		this(screen.width,screen.height);
 		this.screen = screen;
@@ -33,6 +43,10 @@ public abstract class EasyDisplay extends Canvas implements Runnable{
 	
 	//Implemented Methods
 	
+	/**
+	 * Starts the thread execution.<br>
+	 * Can only be stopped by the stop method.
+	 */
 	public void start(){
 		if(this.running) {
 			return;
@@ -42,6 +56,10 @@ public abstract class EasyDisplay extends Canvas implements Runnable{
 		this.thread.start();
 	}
 	
+	/**
+	 * Kills the thread execution.
+	 * @throws InterruptedException
+	 */
 	public void stop() throws InterruptedException {
 		if(!this.running) {
 			return;
@@ -50,6 +68,10 @@ public abstract class EasyDisplay extends Canvas implements Runnable{
 		this.thread.join();
 	}
 
+	/**
+	 * Thread implemented method.<br>
+	 * SHOULD NOT BE DIRECTLY CALLED!
+	 */
 	@Override
 	public void run() {
 		while(this.running) {
@@ -58,7 +80,10 @@ public abstract class EasyDisplay extends Canvas implements Runnable{
 		}
 	}
 	
-	public void render() {
+	/**
+	 * Renders the current screen.
+	 */
+	private void render() {
 		BufferStrategy bufferstrategy = this.getBufferStrategy();
 		if(bufferstrategy == null) {
 			createBufferStrategy(3);
@@ -68,17 +93,21 @@ public abstract class EasyDisplay extends Canvas implements Runnable{
 		screen.render();
 		
 		int i = 0;
-		for(i = 0;i<EasyDisplay.WIDTH*EasyDisplay.HEIGHT;i++) {
+		for(i = 0;i<this.width*this.height;i++) {
 			pixels[i] = screen.pixels[i];
 		}
 		
 		Graphics g = bufferstrategy.getDrawGraphics();
-		g.drawImage(img, 0, 0, EasyDisplay.WIDTH, EasyDisplay.HEIGHT,null);
+		g.drawImage(img, 0, 0, this.width, this.height,null);
 		g.dispose();
 		bufferstrategy.show();
 	}
 	
 	//Methods to be implemented
 	
+	/**
+	 * Ticks any user implemented functionality.<br>
+	 * Such as ingame time.
+	 */
 	public abstract void tick();
 }
