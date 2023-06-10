@@ -122,7 +122,6 @@ It does have out of bounds protection.
 
 ### buildUnsortedTrianglePattern(int maxWidth,int maxHeight,int x1, int y1, int x2, int y2, int x3, int y3)
 Sorts the triangle, and then calls the buildTrianglePattern.<br>
-Builds a filled triangle pattern out of a <strong>SORTED</strong> triangle.
 
 ### buildTrianglePattern(int maxWidth,int maxHeight,int x1, int y1, int x2, int y2, int x3, int y3)
 Builds a filled triangle pattern out of a <strong>SORTED</strong> triangle.
