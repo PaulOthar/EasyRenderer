@@ -1,8 +1,7 @@
-package example;
+package examples;
 
 import javax.swing.JFrame;
 
-import graphicTools.EasyColor;
 import graphicTools.EasyDrafter;
 import graphics.EasyDisplay;
 import graphics.EasyScreen;
