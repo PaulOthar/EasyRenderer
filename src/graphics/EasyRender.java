@@ -26,7 +26,7 @@ public class EasyRender {
 	 * Fills the bitmap with a static rgb gradiant image.<br>
 	 * The gradiant flows from top to bottom.
 	 */
-	public void draw() {
+	public void draw_filled_gradiant() {
 		int i = 0;
 		float scaleStep = 1f/this.pixels.length;
 		for(i = 0;i<this.pixels.length;i++) {
@@ -41,7 +41,7 @@ public class EasyRender {
 	 * Negative movement means the image will flow downwards.
 	 * @param movement step (0-1)
 	 */
-	public void draw(float movement) {
+	public void draw_filled_stepped_gradiant(float movement) {
 		int i = 0;
 		float scaleStep = 1f/this.pixels.length;
 		float scale = 0;
@@ -61,7 +61,7 @@ public class EasyRender {
 	 * Fills the bitmap with a single color.
 	 * @param color
 	 */
-	public void draw(int color) {
+	public void draw_filled_colored(int color) {
 		int i = 0;
 		for(i = 0;i<this.pixels.length;i++) {
 			this.pixels[i] = color;
@@ -74,7 +74,7 @@ public class EasyRender {
 	 * 
 	 * @param pattern
 	 */
-	public void draw(int[] pattern) {
+	public void draw_pattern_gradient(int[] pattern) {
 		int i = 0;
 		float scaleStep = 1f/pattern.length;
 		for(i = 0;i<pattern.length;i++) {
@@ -91,7 +91,7 @@ public class EasyRender {
 	 * @param pattern
 	 * @param movement step (0-1)
 	 */
-	public void draw(int[] pattern,float movement) {
+	public void draw_pattern_stepped_gradient(int[] pattern,float movement) {
 		int i = 0;
 		float scaleStep = 1f/pattern.length;
 		float scale = 0;
@@ -112,10 +112,31 @@ public class EasyRender {
 	 * @param pattern
 	 * @param color
 	 */
-	public void draw(int[] pattern,int color) {
+	public void draw_pattern_colored(int[] pattern,int color) {
 		int i = 0;
 		for(i = 0;i<pattern.length;i++) {
 			this.pixels[pattern[i]] = color;
+		}
+	}
+	
+	/**
+	 * Fills the specified area with the contents of external bitmap
+	 * @param render
+	 * @param x (Origin)
+	 * @param y (Origin)
+	 */
+	public void draw_bitmap(int[] pixels,int width,int height,int x,int y) {
+		int bitmapY = 0;
+		int bitmapX = 0;
+		
+		int Y = 0;
+		int X = 0;
+		for(Y = 0;Y<height;Y++) {
+			bitmapY = Y+y;
+			for(X = 0;X<width;X++) {
+				bitmapX = X+x;
+				this.pixels[bitmapX+bitmapY*this.width] = pixels[X+Y*width];
+			}
 		}
 	}
 	
@@ -125,19 +146,7 @@ public class EasyRender {
 	 * @param x (Origin)
 	 * @param y (Origin)
 	 */
-	public void draw(EasyRender render,int x,int y) {
-		int bitmapY = 0;
-		int bitmapX = 0;
-		
-		int Y = 0;
-		int X = 0;
-		for(Y = 0;Y<render.height;Y++) {
-			bitmapY = Y+y;
-			for(X = 0;X<render.width;X++) {
-				bitmapX = X+x;
-				
-				pixels[bitmapX+bitmapY*this.width] = render.pixels[X+Y*render.width];
-			}
-		}
+	public void draw_render(EasyRender render,int x,int y) {
+		this.draw_bitmap(render.pixels, render.width, render.height, x, y);
 	}
 }

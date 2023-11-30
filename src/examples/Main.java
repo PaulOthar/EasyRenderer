@@ -21,8 +21,8 @@ public class Main {
 				if(currentStep > 1) {
 					currentStep = 0;
 				}
-				this.draw(currentStep);
-				this.draw(trianglePattern,-currentStep);
+				this.draw_filled_stepped_gradiant(currentStep);
+				this.draw_pattern_stepped_gradient(trianglePattern,-currentStep);
 			}
 		};
 		EasyDisplay display = new EasyDisplay(screen) {

@@ -12,7 +12,7 @@ public class EasyDrafter {
 		int[] output = new int[length];
 		
 		int i = 0;
-		for(i = 0;i<length;i++) {
+		for(;i<length;i++) {
 			output[i] = i;
 		}
 		
@@ -46,7 +46,7 @@ public class EasyDrafter {
 		int yPix = 0;
 		
 		int i = 0;
-		for(i = 0;i<Length;i++) {
+		for(;i<Length;i++) {
 			xPix = (int)Math.ceil(i * X) + x1;
 			yPix = (int)Math.ceil(i * Y) + y1;
 			

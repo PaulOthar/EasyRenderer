@@ -1,6 +1,10 @@
 package graphicTools;
 
 public class EasyColor {
+	private static final float STUPID_ONE_HALF = 1f/2;
+	private static final float STUPID_ONE_THIRD = 1f/3;
+	private static final float STUPID_TWO_THIRDS = 2f/3;
+	
 	/**
 	 * Translate 3 Integers RGB into a singe integer RGB.<br>
 	 * The 3 intake integers will be read with bitwise operations, to not overflow the 255 limit<br>
@@ -11,19 +15,7 @@ public class EasyColor {
 	 * @return integer rgb
 	 */
 	public static int rgb(int r,int g,int b) {
-		// 0x00_rr_gg_bb
-		int output = 0;
-		
-		//Eliminate extra bytes
-		r = r&0xff;
-		g = g&0xff;
-		b = b&0xff;
-		
-		output += r*0x10000;
-		output += g*0x100;
-		output += b;
-		
-		return output;
+		return ((r&0xff)<<16)|((g&0xff)<<8)|(b&0xff);
 	}
 	
 	/**
@@ -37,37 +29,18 @@ public class EasyColor {
 	 * @return integer rgb
 	 */
 	public static int rgbyte(int color) {
-		int intensity = color & 0b1100_0000;
-		int red = color & 0b0011_0000;
-		int green = color & 0b0000_1100;
+		int red = (color & 0b0011_0000)<<12;
+		int green = (color & 0b0000_1100)<<6;
 		int blue = color & 0b0000_0011;
 		
-		intensity /= 0b0100_0000;
+		int intensity = (color & 0b1100_0000)>>6;
+		int product = 21*(intensity+1);
 		
-		red *= 0x1000;
-		green *= 0x40;
+		red *= product;
+		green *= product;
+		blue *= product;
 		
-		red = (red*21) + (red*intensity*21);
-		green = (green*21)+(green*intensity*21);
-		blue = (blue*21)+(blue*intensity*21);
-		
-		return red+green+blue;
-	}
-	
-	/**
-	 * It took too long to write this documentation, so i have no idea what i have done here.
-	 * @param pallete
-	 * @param indexes
-	 * @return
-	 */
-	public static int rgbytePallete(int pallete,int indexes) {
-		int firstGrabber = (int) Math.pow(2, (indexes & 0b11)*8);
-		int secondGrabber = (int) Math.pow(2, ((indexes & 0b1100)/4)*8);
-		
-		int firstHalf = (pallete & (firstGrabber * 0b1111))/firstGrabber;
-		int secondHalf = (pallete & (secondGrabber * 0b1111_0000))/secondGrabber;
-		
-		return rgbyte(firstHalf+secondHalf);
+		return red|green|blue;
 	}
 	
 	/**
@@ -80,8 +53,8 @@ public class EasyColor {
 		int v1 = 0;
 		int v2 = 0;
 		
-		if(normalizedScale >= 1f/2) {//Green to blue
-			normalizedScale -= 1f/2;
+		if(normalizedScale >= STUPID_ONE_HALF) {//Green to blue
+			normalizedScale -= STUPID_ONE_HALF;
 			normalizedScale *= 2;
 			
 			v1 = (int) (255*normalizedScale);
@@ -109,11 +82,8 @@ public class EasyColor {
 		int v1 = 0;
 		int v2 = 0;
 		
-		float br = 2f/3;
-		float gb = 1f/3;
-		
-		if(normalizedScale >= br) {//Blue to red
-			normalizedScale -= br;
+		if(normalizedScale >= STUPID_TWO_THIRDS) {//Blue to red
+			normalizedScale -= STUPID_TWO_THIRDS;
 			normalizedScale *= 3;
 			
 			v1 = (int) (255*normalizedScale);
@@ -121,8 +91,8 @@ public class EasyColor {
 			
 			return EasyColor.rgb(v1, 0, v2);
 		}
-		else if(normalizedScale >= gb) {//Green to blue
-			normalizedScale -= gb;
+		else if(normalizedScale >= STUPID_ONE_THIRD) {//Green to blue
+			normalizedScale -= STUPID_ONE_THIRD;
 			normalizedScale *= 3;
 			
 			v1 = (int) (255*normalizedScale);
@@ -148,19 +118,19 @@ public class EasyColor {
 	 * @return integer rgb
 	 */
 	public static int gradient(float scale,int color1,int color2) {
-		int r1 = (color1&0xff0000)/0x10000;
-		int g1 = (color1&0xff00)/0x100;
+		int r1 = (color1&0xff0000)>>16;
+		int g1 = (color1&0xff00)>>8;
 		int b1 = color1&0xff;
 		
-		int r2 = (color2&0xff0000)/0x10000;
-		int g2 = (color2&0xff00)/0x100;
+		int r2 = (color2&0xff0000)>>16;
+		int g2 = (color2&0xff00)>>8;
 		int b2 = color2&0xff;
 		
 		int R = (int) (r1 + (r2-r1)*scale);
 		int G = (int) (g1 + (g2-g1)*scale);
 		int B = (int) (b1 + (b2-b1)*scale);
 		
-		return (R*0x10000)+(G*0x100)+B;
+		return (R<<16)|(G<<8)|B;
 	}
 	
 	/**
