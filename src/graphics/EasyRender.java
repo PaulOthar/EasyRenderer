@@ -1,5 +1,13 @@
 package graphics;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import examples.Main;
 import graphicTools.EasyColor;
 
 /**
@@ -21,6 +29,67 @@ public class EasyRender {
 		this.height = height;
 		this.pixels = new int[width*height];
 	}
+	
+	//Main functionality methods
+	
+	/**
+	 * Fills the specified area with the contents of external bitmap
+	 * @param render
+	 * @param x (Origin)
+	 * @param y (Origin)
+	 */
+	public void draw_bitmap(int[] pixels,int width,int height,int x,int y) {
+		int bitmapY = 0;
+		int bitmapX = 0;
+		
+		int Y = 0;
+		int X = 0;
+		for(Y = 0;Y<height;Y++) {
+			
+			for(X = 0;X<width;X++) {
+				if(pixels[X+Y*width] == 0) {
+					continue;
+				}
+				bitmapY = Y+y;
+				bitmapX = X+x;
+				this.pixels[bitmapX+bitmapY*this.width] = pixels[X+Y*width];
+			}
+		}
+	}
+	
+	/**
+	 * Fills the specified area with the contents of another Render
+	 * @param render
+	 * @param x (Origin)
+	 * @param y (Origin)
+	 */
+	public void draw_render(EasyRender render,int x,int y) {
+		this.draw_bitmap(render.pixels, render.width, render.height, x, y);
+	}
+	
+	//Other functionality methods
+	
+	public static EasyRender readImage(BufferedImage bi) {
+		int[] data = ((DataBufferInt) bi.getRaster().getDataBuffer()).getData();
+		for(int i = 0;i<data.length;i++) {
+			if(data[i] == 0 || data[i] == 0xffffff) {
+				continue;
+			}
+			//System.out.println(String.format("%x", data[i]));
+		}
+		EasyRender output = new EasyRender(bi.getWidth(),bi.getHeight());
+		output.draw_bitmap(data, output.width, output.height, 0, 0);
+		return output;
+	}
+	
+	public static EasyRender readImage(String path) throws IOException {
+		BufferedImage loaded = ImageIO.read(new FileInputStream(path));
+		BufferedImage formatted = new BufferedImage(loaded.getWidth(),loaded.getHeight(),BufferedImage.TYPE_INT_ARGB);
+		formatted.getGraphics().drawImage(loaded, 0, 0,null);
+		return EasyRender.readImage(formatted);
+	}
+	
+	//Random functionality methods
 	
 	/**
 	 * Fills the bitmap with a static rgb gradiant image.<br>
@@ -117,36 +186,5 @@ public class EasyRender {
 		for(i = 0;i<pattern.length;i++) {
 			this.pixels[pattern[i]] = color;
 		}
-	}
-	
-	/**
-	 * Fills the specified area with the contents of external bitmap
-	 * @param render
-	 * @param x (Origin)
-	 * @param y (Origin)
-	 */
-	public void draw_bitmap(int[] pixels,int width,int height,int x,int y) {
-		int bitmapY = 0;
-		int bitmapX = 0;
-		
-		int Y = 0;
-		int X = 0;
-		for(Y = 0;Y<height;Y++) {
-			bitmapY = Y+y;
-			for(X = 0;X<width;X++) {
-				bitmapX = X+x;
-				this.pixels[bitmapX+bitmapY*this.width] = pixels[X+Y*width];
-			}
-		}
-	}
-	
-	/**
-	 * Fills the specified area with the contents of another Render
-	 * @param render
-	 * @param x (Origin)
-	 * @param y (Origin)
-	 */
-	public void draw_render(EasyRender render,int x,int y) {
-		this.draw_bitmap(render.pixels, render.width, render.height, x, y);
 	}
 }

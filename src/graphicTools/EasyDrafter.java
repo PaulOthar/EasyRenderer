@@ -50,6 +50,7 @@ public class EasyDrafter {
 			xPix = (int)Math.ceil(i * X) + x1;
 			yPix = (int)Math.ceil(i * Y) + y1;
 			
+			System.out.println(String.format("%d %d", xPix,yPix));
 			if(xPix < 0 || xPix >= maxWidth) {
 				continue;
 			}
