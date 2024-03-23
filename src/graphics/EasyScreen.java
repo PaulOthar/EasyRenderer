@@ -1,24 +1,20 @@
 package graphics;
 
-/**
- * EasyScreen is an extention to EasyRender, that needs to implement a render method.<br>
- * @author PaulOthar
- */
-public abstract class EasyScreen extends EasyRender{
-	
-	/**
-	 * Straight foward superclass call.<br>
-	 * Takes in a width and a height in pixels, to create a bitmap(Array of Integers).
-	 * @param width in pixels
-	 * @param height in pixels
-	 */
-	public EasyScreen(int width,int height) {
-		super(width,height);
-	}
+import java.awt.image.BufferedImage;
 
-	/**
-	 * This method will be called each cycle of the graphics update.<br>
-	 * So this must be implemented containing everything that will be done to render the desired image.
-	 */
+public abstract class EasyScreen extends EasyBitmap{
+	protected double deltaTime;
+	
+	public EasyScreen(int width,int height) {
+		super(new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB));
+		this.deltaTime = 0;
+	}
+	
+	public void setDeltaTime(double deltaTime) {
+		this.deltaTime = deltaTime;
+	}
+	
 	public abstract void render();
+	
+	public abstract void tick();
 }

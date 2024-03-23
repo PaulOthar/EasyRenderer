@@ -2,10 +2,10 @@ package examples;
 
 import javax.swing.JFrame;
 
-import graphics2.EasyDisplay;
-import graphics2.EasyScreen;
+import graphics.EasyDisplay;
+import graphics.EasyScreen;
 
-public class Graphics2Test {
+public class DeltaTimeTest {
 	public static final int WIDTH = 1024;
 	public static final int HEIGHT = 512;
 	
@@ -19,10 +19,10 @@ public class Graphics2Test {
 		}
 
 		public double dotPosition = 0;
-		public double dotStep = 50;
+		public double dotStep = 30;
 		
 		public void stress() {
-			for(int i = 0;i<10000/1;i++) {
+			for(int i = 0;i<100/1;i++) {
 				for(int l = 0;l<this.pixels.length;l++) {
 					this.pixels[l] = 0xff;
 				}
@@ -32,6 +32,7 @@ public class Graphics2Test {
 		@Override
 		public void render() {
 			current = System.currentTimeMillis();
+			this.stress();
 			this.clear();
 			int dotround = (int) Math.round(dotPosition);
 			int dotmath = (dotround + dotround*this.width);
@@ -40,7 +41,7 @@ public class Graphics2Test {
 				dotmath = 0;
 				System.out.println((current-start)/1000);
 				start = current;
-			}
+			} 
 			this.pixels[dotmath] = 0xffffffff;
 		}
 

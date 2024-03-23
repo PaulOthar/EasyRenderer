@@ -1,4 +1,4 @@
-package graphics2;
+package graphics;
 
 public class ANSIRenderer {
 	//private static final String DUOPIXEL_FULL = "█";
