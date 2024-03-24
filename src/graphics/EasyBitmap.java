@@ -28,8 +28,14 @@ public class EasyBitmap {
 		int bitmapY = 0;
 		for(int Y = 0;Y < height;Y++) {
 			bitmapY = Y+offY;
+			if(bitmapY >= this.height) {
+				return;
+			}
 			for(int X = 0;X < width;X++) {
 				bitmapX = X+offX;
+				if(bitmapX >= this.width) {
+					break;
+				}
 				if(pixels[X+Y*width] == 0) {
 					continue;
 				}

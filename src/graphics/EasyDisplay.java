@@ -2,8 +2,11 @@ package graphics;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+
+import input.InputListener;
 
 public class EasyDisplay extends Canvas implements Runnable  {
 	private static final long serialVersionUID = 1L;
@@ -26,18 +29,32 @@ public class EasyDisplay extends Canvas implements Runnable  {
 	private int width;
 	private int height;
 	
+	private final InputListener input;
+	
 	public EasyDisplay(int width,int height,int framesPerSecond) {
 		this.width = width;
 		this.height = height;
+		
+		this.setPreferredSize(new Dimension(width,height));
 		
 		this.frameLimit = framesPerSecond;
 		this.frameStep = 1000f/this.frameLimit;
 		
 		this.screen = null;
+		
+		this.input = new InputListener();
+		
+		this.addMouseMotionListener(input);
+		this.addMouseListener(input);
+		this.addKeyListener(input);
+		this.addFocusListener(input);
 	}
 	
 	public void setScreen(EasyScreen screen) {
 		this.screen = screen;
+		this.screen.setMousePosition(this.input.getMousePosition());
+		this.screen.setMouseButtons(this.input.getMouseButtons());
+		this.screen.setKeys(this.input.getKeys());
 	}
 	
 	public void setFPSCounterEnabled(boolean enabled) {

@@ -1,5 +1,7 @@
 package examples;
 
+import java.awt.event.KeyEvent;
+
 import javax.swing.JFrame;
 
 import graphics.EasyDisplay;
@@ -19,7 +21,10 @@ public class DeltaTimeTest {
 		}
 
 		public double dotPosition = 0;
-		public double dotStep = 30;
+		public double dotStep = 100;
+		
+		public int dotX = 0;
+		public int dotY = 0;
 		
 		public void stress() {
 			for(int i = 0;i<100/1;i++) {
@@ -35,13 +40,44 @@ public class DeltaTimeTest {
 			this.stress();
 			this.clear();
 			int dotround = (int) Math.round(dotPosition);
-			int dotmath = (dotround + dotround*this.width);
-			if(dotmath >= this.pixels.length) {
+			
+			if(this.keys[KeyEvent.VK_SPACE]) {
+				dotround *= 5;
+			}
+			
+			int xspeed = 0;
+			int yspeed = 0;
+			
+			if(this.keys[KeyEvent.VK_D]) {
+				xspeed += dotround;
+			}
+			if(this.keys[KeyEvent.VK_A]) {
+				xspeed -= dotround;
+			}
+			if(this.keys[KeyEvent.VK_W]) {
+				yspeed -= dotround;
+			}
+			if(this.keys[KeyEvent.VK_S]) {
+				yspeed += dotround;
+			}
+			
+			xspeed *= 2;
+			yspeed *= 2;
+			
+			if(xspeed != 0 && yspeed != 0) {
+				xspeed /= 2;
+				yspeed /= 2;
+			}
+			
+			dotX += xspeed;
+			dotY += yspeed;
+			
+			if(dotround >= 1) {
 				dotPosition = 0;
-				dotmath = 0;
-				System.out.println((current-start)/1000);
-				start = current;
-			} 
+			}
+			
+			int dotmath = dotX+dotY*this.width;
+			
 			this.pixels[dotmath] = 0xffffffff;
 		}
 
@@ -52,15 +88,18 @@ public class DeltaTimeTest {
 	}
 	
 	public static void main(String[] args) {
-		CustomScreen screen = new CustomScreen(WIDTH,HEIGHT);
+		CustomScreen screen = new CustomScreen(WIDTH/4,HEIGHT/4);
 		EasyDisplay display = new EasyDisplay(WIDTH,HEIGHT,60);
+		
+		display.addMouseListener(null);
+		
 		display.setScreen(screen);
 		display.setFPSCounterEnabled(true);
 		
 		JFrame window = new JFrame("Example");
 		window.add(display);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(WIDTH,HEIGHT);
+		window.pack();
 		window.setResizable(false);
 		window.setVisible(true);
 		
