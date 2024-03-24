@@ -1,6 +1,8 @@
 package examples;
 
+import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
@@ -96,8 +98,12 @@ public class DeltaTimeTest {
 		display.setScreen(screen);
 		display.setFPSCounterEnabled(true);
 		
-		JFrame window = new JFrame("Example");
+		JFrame window = new JFrame("Delta time example");
 		window.add(display);
+		window.setCursor( window.getToolkit().createCustomCursor(
+                new BufferedImage( 1, 1, BufferedImage.TYPE_INT_ARGB ),
+                new Point(),
+                null ) );
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.pack();
 		window.setResizable(false);

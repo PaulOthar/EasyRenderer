@@ -11,7 +11,7 @@ import input.InputListener;
 public class EasyDisplay extends Canvas implements Runnable  {
 	private static final long serialVersionUID = 1L;
 
-	public static final String FPS_FORMAT = "FPS: %08X";
+	public static final String FPS_FORMAT = "[0dFPS: %010d] [0xFPS:%08X]";
 	
 	private EasyScreen screen;
 	
@@ -132,7 +132,7 @@ public class EasyDisplay extends Canvas implements Runnable  {
 		
 		if(this.showFPS) {
 			g.setColor(Color.white);
-			g.drawString(String.format(FPS_FORMAT, fps), 0, 10);
+			g.drawString(String.format(FPS_FORMAT, fps,fps), 0, 10);
 		}
 		
 		g.dispose();

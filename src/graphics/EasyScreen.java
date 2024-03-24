@@ -2,7 +2,9 @@ package graphics;
 
 import java.awt.image.BufferedImage;
 
-public abstract class EasyScreen extends EasyBitmap{
+import utils.Bitmap;
+
+public abstract class EasyScreen extends Bitmap{
 	protected double deltaTime;
 	
 	protected int[] mousePosition;

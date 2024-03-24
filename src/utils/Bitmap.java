@@ -1,29 +1,44 @@
-package graphics;
+package utils;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
-public class EasyBitmap {
+public class Bitmap {
 	protected final int width;
 	protected final int height;
 	protected final int[] pixels;
 	protected final BufferedImage image;
 	
-	public EasyBitmap(int width,int height) {
+	public Bitmap(int width,int height) {
 		this.width = width;
 		this.height = height;
 		this.pixels = new int[width*height];
 		this.image = null;
 	}
 	
-	public EasyBitmap(BufferedImage img) {
+	public Bitmap(BufferedImage img) {
 		this.width = img.getWidth();
 		this.height = img.getHeight();
 		this.pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
 		this.image = img;
 	}
 	
-	public void drawBitmap(int width,int height,int[] pixels,int offX,int offY) {
+	public void drawOutline(int color) {
+		for(int i = 0;i<width;i++) {
+			this.pixels[i] = color;
+			this.pixels[i+(this.width-1)*this.height] = color;
+		}
+		for(int i = 0;i<height;i++) {
+			this.pixels[i*this.width] = color;
+			this.pixels[this.width-1+i*this.width] = color;
+		}
+	}
+	
+	public void drawBitmap(Bitmap bitmap,int offX,int offY) {
+		this.drawBitmapContents(bitmap.getWidth(), bitmap.getHeight(), bitmap.getPixels(), offX, offY);
+	}
+	
+	public void drawBitmapContents(int width,int height,int[] pixels,int offX,int offY) {
 		int bitmapX = 0;
 		int bitmapY = 0;
 		for(int Y = 0;Y < height;Y++) {
@@ -31,11 +46,19 @@ public class EasyBitmap {
 			if(bitmapY >= this.height) {
 				return;
 			}
+			else if(bitmapY < 0) {
+				continue;
+			}
 			for(int X = 0;X < width;X++) {
 				bitmapX = X+offX;
+				
 				if(bitmapX >= this.width) {
 					break;
 				}
+				else if(bitmapX < 0) {
+					continue;
+				}
+				
 				if(pixels[X+Y*width] == 0) {
 					continue;
 				}
