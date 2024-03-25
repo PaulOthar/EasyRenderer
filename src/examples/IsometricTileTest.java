@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import graphicTools.IsometricDrafter;
+import graphicTools.IsometricMap;
 import graphics.EasyDisplay;
 import graphics.EasyScreen;
 import utils.Bitmap;
@@ -19,6 +21,7 @@ public class IsometricTileTest {
 	
 	public static class CustomScreen extends EasyScreen{
 		private ArrayList<Bitmap> assets;
+		private int[] sketch;
 		
 		private double spacePosition = 0;
 		private double spaceStep = 100;
@@ -29,46 +32,38 @@ public class IsometricTileTest {
 		public CustomScreen(int width, int height) throws IOException {
 			super(width, height);
 			this.assets = new ArrayList<>();
-			this.assets.add(FileManager.readBitmap(FileManager.selectFile("./resources/f.png")));
-			this.assets.add(FileManager.readBitmap(FileManager.selectFile("./resources/lw.png")));
-			this.assets.add(FileManager.readBitmap(FileManager.selectFile("./resources/rw.png")));
+			this.assets.add(FileManager.readBitmap(FileManager.selectFile("./resources/strongf2.png")));
+			this.assets.add(FileManager.readBitmap(FileManager.selectFile("./resources/stronglw.png")));
+			this.assets.add(FileManager.readBitmap(FileManager.selectFile("./resources/strongrw.png")));
 			
-			//this.assets.get(0).drawOutline(0xff0000);
-			this.assets.get(1).drawOutline(0xff00);
-			this.assets.get(2).drawOutline(0xff);
+			this.sketch = IsometricMap.buildMap(FileManager.readFileText(FileManager.selectFile("./resources/map.txt")));
+			
+			//this.assets.get(1).drawOutline(0xff0000);
 		}
 		
-		public void drawTile(Bitmap bitmap,int x,int y,int z,int offsetX,int offsetY) {
-			int X = (x-z)*(bitmap.getWidth()>>1);
-			int Y = ((x+y+z+1)*(bitmap.getHeight()))>>2;
-			
-			X += this.width>>1;
-			Y += this.height>>1;
-			
-			X += offsetX;
-			Y += offsetY;
-			
-			if(X > this.width || Y > this.height || X < -bitmap.getWidth() || Y < -bitmap.getHeight()) {
-				return;
-			}
-			
-			this.drawBitmap(bitmap, X, Y);
-		}
-
 		@Override
 		public void render() {
 			this.clear();
+			/*
+			
+			int potencia = 1000;
 			//10K choras muito
-			for(int x = 0;x<1000;x++) {
-				for(int z = 0;z<1000;z++) {
-					this.drawTile(this.assets.get(0), x, 0, z, this.spaceX, this.spaceY);
+			for(int x = 0;x<potencia;x++) {
+				for(int z = 0;z<potencia;z++) {
+					IsometricDrafter.drawTile(this.assets.get(0),this, x, 0, z, this.spaceX, this.spaceY);
 				}
 			}
 			
-			this.drawTile(this.assets.get(1), 0, 0, 0, this.spaceX, this.spaceY);
-			this.drawTile(this.assets.get(1), 0, -2, 0, this.spaceX, this.spaceY);
+			IsometricDrafter.drawTile(this.assets.get(1),this, 0, 0, 0, this.spaceX, this.spaceY);
 			//this.drawBitmap(this.assets.get(1), 32, 32);
 			//this.drawBitmap(this.assets.get(2), 32, 32);
+			
+			*/
+			
+			for(int i = 0;i<1;i++) {
+				IsometricDrafter.drawTileMap(this.sketch, this.assets.get(0), this.assets.get(1), this.assets.get(2), this, this.spaceX, this.spaceY);	
+			}
+			this.drawCross(0xff0000, 10);
 		}
 
 		@Override
@@ -111,7 +106,7 @@ public class IsometricTileTest {
 			if(this.keys[KeyEvent.VK_F12]) {
 				try {
 					System.out.println("Printed");
-					FileManager.saveBitmap(this, FileManager.createFile("resources/print.png"), false);
+					FileManager.saveBitmap(this, FileManager.createFile("resources/print.png"), true);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

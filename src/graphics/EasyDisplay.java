@@ -113,8 +113,10 @@ public class EasyDisplay extends Canvas implements Runnable  {
 			oldTime = currentTime;
 			toElapse = currentTime+this.frameStep;
 			
+			//long tim = System.nanoTime();
 			this.tick();
 			this.render(lastFPS);
+			//System.out.println(System.nanoTime()-tim);
 		}while(this.running);
 	}
 	

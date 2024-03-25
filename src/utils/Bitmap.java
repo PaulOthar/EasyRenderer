@@ -23,6 +23,10 @@ public class Bitmap {
 		this.image = img;
 	}
 	
+	public void setPixel(int color,int x,int y) {
+		this.pixels[x+y*this.width] = color;
+	}
+	
 	public void drawOutline(int color) {
 		for(int i = 0;i<width;i++) {
 			this.pixels[i] = color;
@@ -31,6 +35,17 @@ public class Bitmap {
 		for(int i = 0;i<height;i++) {
 			this.pixels[i*this.width] = color;
 			this.pixels[this.width-1+i*this.width] = color;
+		}
+	}
+	
+	public void drawCross(int color,int size) {
+		int w = width/2;
+		int h = height/2;
+		for(int i = w-size;i<w+size;i++) {
+			this.setPixel(color, i, h);
+		}
+		for(int i = h-size;i<h+size;i++) {
+			this.setPixel(color, w, i);
 		}
 	}
 	

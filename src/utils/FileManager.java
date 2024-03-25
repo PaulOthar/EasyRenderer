@@ -84,6 +84,18 @@ public class FileManager {
 		return output;
 	}
 	
+	public static String readFileText(File file) throws IOException {
+		String output = "";
+		String[] read = readFileLines(file);
+		for(int i = 0;i<read.length;i++) {
+			if(i>0) {
+				output += "\n";
+			}
+			output += read[i];
+		}
+		return output;
+	}
+	
 	public static void overwriteFile(File file,String content) throws IOException {
 		FileWriter fw = new FileWriter(file);
 		BufferedWriter bw = new BufferedWriter(fw);
